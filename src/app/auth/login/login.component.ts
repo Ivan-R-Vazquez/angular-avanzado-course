@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -25,7 +25,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private ngZone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
     // window.onload = function () {
     google.accounts.id.initialize({
       client_id: "438660844352-m8jm9f9t5aaabld71duhog8l7aa7ste7.apps.googleusercontent.com",
-      callback: response => this.handleCredentialResponse(response, that)
+      callback: response => this.ngZone.run(() => this.handleCredentialResponse(response, that))
     });
     google.accounts.id.renderButton(
       document.getElementById("buttonDiv"),
